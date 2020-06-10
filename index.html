@@ -13,55 +13,61 @@
 </head>
 <body>
 <div class="container">
-	<div class="row">
-	    <div class="col-md-1">
-	    </div>
-	    <div class="col-md-10" style="text-align: center;">
-	    	<h1>Apex Legends Battle Pass Level</h1>
-	    </div>
-	    <div class="col-md-1">
-	    </div>
-  	</div>
-	<div class="row">
-	    <div class="col-md-4">
-	    </div>
-	    <div class="col-md-4">
-	      <div class="input-group flex-nowrap">
-	  		<div class="input-group-prepend">
-	    		<span class="input-group-text" id="addon-wrapping">Enter your Battle Pass level:</span>
-	  		</div>
-	  		<input id="level" type="number" min="0" max="100" class="form-control" placeholder="number" aria-label="number" aria-describedby="addon-wrapping">
-		  </div>
-	    </div>
-	    <div class="col-md-4">
-	    </div>
-	</div>
-	<div class="row">
-	    <div class="col-md-4">
-	    </div>
-	    <div class="col-md-4" style="text-align: center;">
-	    	<h3>Expected level:</h3>
-	    	<div class="progress">
-			  	<div id="progresse" class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-			</div>
-			<h3>Your Level:</h3>
-			<div class="progress">
-			  	<div id="progress" class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-			</div>
-	    </div>
-	    <div class="col-md-4">
-	    </div>
-  	</div>
+  <div class="row">
+     <div class="col-md-1">
+     </div>
+     <div class="col-md-10" style="text-align: center;">
+     	<h1>Apex Legends Battle Pass Level</h1>
+     	<hr>
+       <div class="input-group flex-nowrap">
+     <div class="input-group-prepend">
+       <span class="input-group-text" id="addon-wrapping">Enter your level:</span>
+     </div>
+     <input id="levelbp" type="number" min="0" max="100" class="form-control" placeholder="number" aria-label="number" aria-describedby="addon-wrapping" />
+    </div>
+     </div>
+     <div class="col-md-1">
+     </div>
+ </div>
+ <br/>
+ <div class="row">
+     <div class="col-md-2">
+     </div>
+     <div class="col-md-8" style="text-align: center;">
+
+     <h3>Your level:</h3>
+   <div class="progress">
+      <div id="progress" class="progress-bar bg-" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+   </div>
+   <br/>
+    <h2>Expected level for...</h2>
+      <h3>100 level</h3>
+      <div class="progress">
+      <div id="progress100" class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+     </div>
+<br/>
+     <h3>110 level</h3>
+      <div class="progress">
+      <div id="progress110" class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+     </div>
+<br/>
+     <h3>98 level - last gold coins</h3>
+      <div class="progress">
+      <div id="progressgold" class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+     </div>
+   
+     </div>
+     <div class="col-md-2">
+     </div>
+   </div>
+<br/>
+<p>Date of season start - 05.05.2020</p>
+<p>Date of season end - 18.08.2020 (unofficial)</p>
 </div>
 <script>
 
-level.oninput = function() {
-	progress.setAttribute("style", 'width: ' + level.value + '%');
-	progress.innerHTML = level.value;
- };
-
 var start_date = new Date("05/05/2020"); 
-var end_date = new Date("08/04/2020"); 
+var end_date = new Date("08/18/2020"); 
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
 var mm = String(today.getMonth() + 1).padStart(2, '0'); 
@@ -69,20 +75,48 @@ var yyyy = today.getFullYear();
 
 today = new Date(mm + '/' + dd + '/' + yyyy);
 
-console.log(today);
-console.log(end_date);
+function countDays(start_day, end_day) {
+ var diff_season_time = end_day.getTime() - start_day.getTime(); 
+ return diff_season_time / (1000 * 3600 * 24); 
+}
 
-var diff_season_time = end_date.getTime() - start_date.getTime(); 
-var diff_season_day = diff_season_time / (1000 * 3600 * 24); 
+var diff_season_day = countDays(start_date, end_date);
+var diff_season_now = countDays(start_date, today)
 
-var diff_season_now = today.getTime() - start_date.getTime();
-var diff_season_now = diff_season_now / (1000 * 3600 * 24); 
+console.log(diff_season_day);
+console.log(diff_season_now);
 
-var percent = Math.ceil	(diff_season_now / diff_season_day * 100);
-console.log(percent);
+var percent100 = Math.ceil (100 / diff_season_day * diff_season_now);
+var percent110 = Math.ceil (110 / diff_season_day * diff_season_now);
+var percentgold = Math.ceil (98 / diff_season_day * diff_season_now);
 
-progresse.setAttribute("style", 'width: ' + percent + '%');
-progresse.innerHTML = percent;
+progress100.setAttribute("style", 'width: ' + percent100 + '%');
+progress100.innerHTML = percent100;
+
+progress110.setAttribute("style", 'width: ' + percent110 + '%');
+progress110.innerHTML = percent110;
+
+progressgold.setAttribute("style", 'width: ' + percentgold + '%');
+progressgold.innerHTML = percentgold;
+
+function setStatus(valbp, percent, progressbar){
+ if (valbp >= percent) {
+   progressbar.setAttribute("class", "progress-bar bg-success");
+ } else {
+  progressbar.setAttribute("class", "progress-bar bg-danger");
+ }
+}
+
+levelbp.oninput = function() {
+ var valbp = levelbp.value;
+  progress.setAttribute("style", 'width: ' + valbp + '%');
+  progress.innerHTML = valbp;
+
+ setStatus(valbp, percent100, progress100);
+ setStatus(valbp, percent110, progress110);
+ setStatus(valbp, percentgold, progressgold);
+ };
+
 </script>
 </body>
 </html>
